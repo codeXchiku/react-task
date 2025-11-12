@@ -1,4 +1,4 @@
-import DateAndTime from "./components/DateAndTime";
+
 import DropDown from "./components/DropDown";
 import Home from "./components/Home";
 import MultiDocument from "./components/MultiDocument";
@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { Routes, Route } from "react-router-dom";
 import Notification from "./components/Notification";
 import Chart from "./components/Chart";
+import DateAndTime from "./components/DateAndTime";
 
 const App = () => {
   return (

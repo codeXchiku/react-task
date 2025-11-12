@@ -3,10 +3,10 @@ import React, { useCallback, useRef, useState } from "react";
 const MultiDocument = ({
   accept = "*",
   maxFiles = 20,
-  maxSizeBytes = 20 * 1024 * 1024, // 20MB default
+  maxSizeBytes = 20 * 1024 * 1024,
   onSubmit,
 }) =>{
-  const [files, setFiles] = useState([]); // [{ file, id, preview }]
+  const [files, setFiles] = useState([]); 
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef(null);
@@ -19,7 +19,7 @@ const MultiDocument = ({
       const arr = Array.from(selectedFiles);
       if (!arr.length) return;
 
-      // validation
+      
       const tooMany = files.length + arr.length > maxFiles;
       if (tooMany) {
         setError(`Maximum ${maxFiles} files allowed.`);
@@ -32,7 +32,7 @@ const MultiDocument = ({
           setError((e) => e + `\n${f.name} is larger than ${Math.round(maxSizeBytes / 1024 / 1024)}MB.`);
           continue;
         }
-        // optional: mime type checks could be done here based on accept
+        
         validated.push({ file: f, id: makeId(), preview: f.type.startsWith("image/") ? URL.createObjectURL(f) : null });
       }
 
@@ -43,7 +43,7 @@ const MultiDocument = ({
 
   const onInputChange = (e) => {
     addFiles(e.target.files);
-    e.target.value = null; // allow selecting same file again
+    e.target.value = null; 
   };
 
   const onDrop = (e) => {
@@ -62,7 +62,7 @@ const MultiDocument = ({
   const onDragLeave = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // if leaving the dropzone area, reset
+    
     setDragActive(false);
   };
 
@@ -90,7 +90,7 @@ const MultiDocument = ({
       if (onSubmit) {
         await onSubmit(payload);
       } else {
-        // default behavior: log files
+        
         console.log("Submitting files:", payload);
         alert(`Submitting ${payload.length} files (check console).`);
       }
@@ -104,7 +104,7 @@ const MultiDocument = ({
     <div className="max-w-2xl mx-auto p-4">
       <label className="block text-sm font-medium text-gray-700 mb-2">Upload files</label>
 
-      {/* Dropzone */}
+      
       <div
         role="button"
         tabIndex={0}
@@ -149,20 +149,20 @@ const MultiDocument = ({
         </div>
       </div>
 
-      {/* Error */}
+      
       {error && (
         <div className="mt-3 text-sm text-red-600 whitespace-pre-line" role="status">
           {error}
         </div>
       )}
 
-      {/* Selected files inline list */}
+     
       <div className="mt-4">
         <div className="space-y-3">
           {files.map((f) => (
             <div key={f.id} className="flex items-center gap-3 p-3 border rounded-md bg-gray-50">
               <div className="flex items-center gap-3 flex-1">
-                {/* thumbnail */}
+               
                 <div className="w-14 h-14 flex-shrink-0 rounded-md overflow-hidden bg-white border">
                   {f.preview ? (
                     <img src={f.preview} alt={f.file.name} className="w-full h-full object-cover" />
@@ -195,7 +195,7 @@ const MultiDocument = ({
         </div>
       </div>
 
-      {/* Actions */}
+     
       <div className="mt-4 flex gap-2">
         <button
           type="button"
@@ -213,7 +213,7 @@ const MultiDocument = ({
           Clear
         </button>
 
-        {/* optional small hint */}
+        
         <div className="ml-auto text-xs text-gray-400">Max per file: {Math.round(maxSizeBytes / 1024 / 1024)}MB</div>
       </div>
     </div>

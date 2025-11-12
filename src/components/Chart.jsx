@@ -15,8 +15,6 @@ import {
   Legend,
 } from "recharts";
 
-
-
 const sampleData = [
   { date: "2025-10-01", value: 240, category: "A" },
   { date: "2025-10-02", value: 139, category: "B" },
@@ -30,7 +28,7 @@ const sampleData = [
   { date: "2025-10-10", value: 700, category: "C" },
 ];
 
-const COLORS = ["#60A5FA", "#34D399", "#FBBF24", "#F472B6", "#A78BFA"];
+const COLORS = ["#7C3AED", "#34D399", "#FBBF24", "#F472B6", "#60A5FA"];
 
 function formatDateISO(dateStr) {
   return new Date(dateStr).toISOString().slice(0, 10);
@@ -52,11 +50,15 @@ function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
     const p = payload[0];
     return (
-      <div className="bg-white p-3 rounded-md shadow-md text-sm border">
-        <div className="font-medium">{label}</div>
-        <div className="mt-1">Value: <span className="font-semibold">{p.value}</span></div>
+      <div className="bg-white p-2.5 rounded-md shadow-md text-xs border border-gray-200">
+        <div className="font-semibold text-gray-800">{label}</div>
+        <div className="mt-1 text-gray-700">
+          Value: <span className="font-semibold text-purple-600">{p.value}</span>
+        </div>
         {p.payload && p.payload.category && (
-          <div className="text-xs text-gray-600">Category: {p.payload.category}</div>
+          <div className="text-[11px] text-gray-500 mt-0.5">
+            Category: {p.payload.category}
+          </div>
         )}
       </div>
     );
@@ -66,29 +68,28 @@ function CustomTooltip({ active, payload, label }) {
 
 function CustomLegend({ payload }) {
   return (
-    <div className="flex flex-wrap gap-3 items-center">
+    <div className="flex flex-wrap gap-2 items-center justify-center text-xs mt-2">
       {payload.map((entry, idx) => (
-        <div key={`legend-${idx}`} className="flex items-center gap-2 text-sm">
+        <div key={`legend-${idx}`} className="flex items-center gap-1 text-gray-700">
           <span
-            className="inline-block w-3 h-3 rounded"
+            className="inline-block w-2.5 h-2.5 rounded-sm"
             style={{ backgroundColor: entry.color }}
           />
-          <span>{entry.value}</span>
+          <span className="font-medium">{entry.value}</span>
         </div>
       ))}
     </div>
   );
 }
 
-const Chart = () =>{
-  const [chartType, setChartType] = useState("line"); // 'line' | 'bar' | 'pie'
+const Chart = () => {
+  const [chartType, setChartType] = useState("line");
   const [from, setFrom] = useState(formatDateISO(sampleData[0].date));
   const [to, setTo] = useState(formatDateISO(sampleData[sampleData.length - 1].date));
 
   const filteredData = useMemo(() => {
     const start = parseISO(from);
     const end = parseISO(to);
-    // include end date
     end.setHours(23, 59, 59, 999);
     return sampleData
       .filter((d) => {
@@ -100,16 +101,16 @@ const Chart = () =>{
 
   const pieData = useMemo(() => aggregateByCategory(filteredData), [filteredData]);
 
-  // UI
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+    <div className="p-6 max-w-5xl mx-auto bg-white min-h-screen mt-10">
+      
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
         <div className="flex items-center gap-3">
-          <label className="text-sm font-medium">Chart type</label>
+          <label className="text-sm font-medium text-gray-700">Chart Type</label>
           <select
             value={chartType}
             onChange={(e) => setChartType(e.target.value)}
-            className="border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-purple-300"
           >
             <option value="line">Line</option>
             <option value="bar">Bar</option>
@@ -117,33 +118,32 @@ const Chart = () =>{
           </select>
         </div>
 
-        <div className="flex items-center gap-2 bg-white p-2 rounded shadow-sm">
+        <div className="flex items-center gap-2 bg-white border border-gray-200 p-2 rounded-lg shadow-sm">
           <div className="text-xs text-gray-600 mr-2">From</div>
           <input
             type="date"
             value={from}
             onChange={(e) => setFrom(e.target.value)}
-            className="text-sm p-2 border rounded"
+            className="text-xs p-2 border border-gray-300 rounded focus:ring-1 focus:ring-purple-300"
           />
           <div className="text-xs text-gray-600 ml-3 mr-2">To</div>
           <input
             type="date"
             value={to}
             onChange={(e) => setTo(e.target.value)}
-            className="text-sm p-2 border rounded"
+            className="text-xs p-2 border border-gray-300 rounded focus:ring-1 focus:ring-purple-300"
           />
 
           <div className="ml-3 flex items-center gap-2">
             <button
               onClick={() => {
-                // last 7 days from max date in sample
                 const maxDate = parseISO(sampleData[sampleData.length - 1].date);
                 const fromDate = new Date(maxDate);
                 fromDate.setDate(fromDate.getDate() - 6);
                 setFrom(formatDateISO(fromDate.toISOString().slice(0, 10)));
                 setTo(formatDateISO(maxDate.toISOString().slice(0, 10)));
               }}
-              className="text-sm px-3 py-1 rounded bg-gray-100 hover:bg-gray-200"
+              className="text-xs px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 font-medium"
             >
               7d
             </button>
@@ -155,7 +155,7 @@ const Chart = () =>{
                 setFrom(formatDateISO(fromDate.toISOString().slice(0, 10)));
                 setTo(formatDateISO(maxDate.toISOString().slice(0, 10)));
               }}
-              className="text-sm px-3 py-1 rounded bg-gray-100 hover:bg-gray-200"
+              className="text-xs px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 font-medium"
             >
               30d
             </button>
@@ -164,7 +164,7 @@ const Chart = () =>{
                 setFrom(formatDateISO(sampleData[0].date));
                 setTo(formatDateISO(sampleData[sampleData.length - 1].date));
               }}
-              className="text-sm px-3 py-1 rounded bg-gray-100 hover:bg-gray-200"
+              className="text-xs px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 font-medium"
             >
               All
             </button>
@@ -172,65 +172,90 @@ const Chart = () =>{
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-4">
+    
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-5">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-semibold">Interactive Chart</h3>
-          <div className="text-sm text-gray-500">Showing {filteredData.length} point(s)</div>
+          <h3 className="text-base font-semibold text-gray-800">
+            Interactive Chart
+          </h3>
+          <div className="text-xs text-gray-500">
+            Showing {filteredData.length} point(s)
+          </div>
         </div>
 
         <div style={{ width: "100%", height: 360 }}>
           <ResponsiveContainer>
             {chartType === "line" && (
-              <LineChart data={filteredData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="displayDate" />
-                <YAxis />
+              <LineChart
+                data={filteredData}
+                margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis dataKey="displayDate" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend content={<CustomLegend />} />
-                <Line type="monotone" dataKey="value" stroke={COLORS[0]} strokeWidth={2} dot={{ r: 4 }} />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke={COLORS[0]}
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                />
               </LineChart>
             )}
 
             {chartType === "bar" && (
-              <BarChart data={filteredData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="displayDate" />
-                <YAxis />
+              <BarChart
+                data={filteredData}
+                margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis dataKey="displayDate" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend content={<CustomLegend />} />
-                <Bar dataKey="value" fill={COLORS[1]} radius={[4, 4, 0, 0]} />
+                <Bar
+                  dataKey="value"
+                  fill={COLORS[1]}
+                  radius={[4, 4, 0, 0]}
+                  barSize={20}
+                />
               </BarChart>
             )}
 
             {chartType === "pie" && (
               <PieChart>
-                <Tooltip />
-                <Legend layout="horizontal" verticalAlign="top" />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend
+                  layout="horizontal"
+                  verticalAlign="bottom"
+                  wrapperStyle={{ fontSize: "11px", marginTop: "5px" }}
+                />
                 <Pie
                   data={pieData}
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={110}
-                  fill="#8884d8"
-                  label={(entry) => `${entry.name}: ${entry.value}`}
+                  outerRadius={100}
+                  labelLine={false}
+                  label={({ name, value }) => `${name}: ${value}`}
                 >
                   {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
                   ))}
                 </Pie>
               </PieChart>
             )}
           </ResponsiveContainer>
         </div>
-
-        <div className="mt-4 text-xs text-gray-600">
-          Tip: Change the date range or chart type to see the chart re-render dynamically. Tooltips and legend are customized for better readability.
-        </div>
       </div>
     </div>
   );
-}
+};
 
-export default Chart
+export default Chart;
