@@ -12,7 +12,7 @@ app.use(express.json());
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-app.post("/validate-form", async (req, res) => {
+app.post("/api/validate-form", async (req, res) => {
   try {
     const formData = req.body;
 
