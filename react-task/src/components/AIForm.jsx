@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default function AIForm() {
 
-  const API = process.env.REACT_APP_API_URL;
+  const API = import.meta.env.VITE_API_URL;
 
   
   const [form, setForm] = useState({
