@@ -81,13 +81,17 @@ const AsyncDropDown = () => {
   }, []);
 
   return (
-    <div className="relative w-80 mt-10" ref={containerRef}>
-     
+  <div className="w-full flex justify-center mt-10 px-4">
+    <div
+      ref={containerRef}
+      className="relative w-full max-w-md"   /* 👈 CENTERED + RESPONSIVE */
+    >
+      {/* Label */}
       <label className="block mb-2 text-gray-700 font-semibold text-sm tracking-wide">
         Select your skills:
       </label>
 
-      
+      {/* Input / Tags / Wrapper */}
       <div
         className={`flex items-center gap-2 border ${
           open ? "border-purple-500 ring-2 ring-purple-200" : "border-gray-300"
@@ -141,7 +145,11 @@ const AsyncDropDown = () => {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-48 overflow-auto transition-all">
+        <div
+          className="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg
+          shadow-lg z-20 max-h-52 overflow-auto
+          w-full text-sm"    /* 👈 MOBILE-FRIENDLY FULL WIDTH DROPDOWN */
+        >
           {loading && (
             <div className="flex items-center justify-center py-3 text-gray-500 text-sm">
               <svg
@@ -183,7 +191,8 @@ const AsyncDropDown = () => {
                 !selected.includes(option) && (
                   <div
                     key={option}
-                    className="px-3 py-2 cursor-pointer hover:bg-purple-50 flex items-center justify-between transition-all text-[13px]" // 👈 smaller text here
+                    className="px-3 py-2 cursor-pointer hover:bg-purple-50
+                    flex items-center justify-between transition-all text-[13px]"
                     onClick={() => addOption(option)}
                   >
                     <span className="text-gray-800 font-medium">{option}</span>
@@ -194,7 +203,9 @@ const AsyncDropDown = () => {
         </div>
       )}
     </div>
-  );
+  </div>
+);
+
 };
 
 export default AsyncDropDown;

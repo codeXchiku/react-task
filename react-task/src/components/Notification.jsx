@@ -13,15 +13,16 @@ const Notification = () => {
   }, []);
 
   return (
-    <div className="h-screen flex items-center justify-center bg-white">
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-8 w-96 text-center transition-all duration-200">
-        <h1 className="text-2xl font-bold mb-5 text-gray-800 tracking-wide">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 sm:p-8 w-full max-w-sm sm:max-w-md text-center transition-all duration-200">
+
+        <h1 className="text-xl sm:text-2xl font-bold mb-5 text-gray-800 tracking-wide">
           🔔 Firebase Notifications
         </h1>
 
         <button
           onClick={requestPermission}
-          className="px-5 py-2.5 bg-green-600 text-white font-medium rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-purple-300 transition-all duration-200"
+          className="px-4 sm:px-5 py-2 bg-green-600 text-white font-medium rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-200"
         >
           Enable Notifications
         </button>
@@ -31,8 +32,14 @@ const Notification = () => {
             <h2 className="text-lg font-semibold text-gray-800 mb-2">
               New Notification:
             </h2>
-            <p className="text-gray-900 font-medium">{message.title}</p>
-            <p className="text-gray-500 text-sm mt-1">{message.body}</p>
+
+            <p className="text-gray-900 font-medium break-words">
+              {message.title}
+            </p>
+
+            <p className="text-gray-500 text-sm mt-1 break-words">
+              {message.body}
+            </p>
           </div>
         )}
       </div>

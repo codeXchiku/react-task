@@ -14,14 +14,8 @@ const Home = () => {
 
         
         <h1 className="text-2xl font-bold mb-3 text-gray-800 tracking-wide">
-          Welcome to the Dashboard 👋
+          Welcome to the React-Tasks 👋
         </h1>
-
-        <p className="text-gray-600 text-sm leading-relaxed">
-          <span className="block mt-3 italic text-gray-500">
-            (Sorry for taking the help of AI in creating this)
-          </span>
-        </p>
       </div>
     </div>
   );

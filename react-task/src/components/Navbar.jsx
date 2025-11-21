@@ -1,117 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { Menu, X } from "lucide-react"; 
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navItems = [
+    { to: "/", label: "Home" },
+    { to: "/date-time", label: "Date & Time" },
+    { to: "/drop-down", label: "Drop Down" },
+    { to: "/multi-document", label: "Multi Document" },
+    { to: "/notification", label: "Notification" },
+    { to: "/chart", label: "Chart" },
+    { to: "/form", label: "Form" },
+  ];
+
   return (
-    <nav className="fixed top-0 left-0 w-full shadow-md z-50 bg-white ">
-      <ul className="flex items-center justify-center space-x-4 p-4">
+    <nav className="fixed top-0 left-0 w-full shadow-md z-50 bg-white">
+      <div className="flex items-center justify-between px-4 py-3 md:px-8">
 
-        <li>
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-blue-100"
-              }`
-            }
-          >
-            Home
-          </NavLink>
-        </li>
+        
+        <h1 className="text-xl font-bold">React-task</h1>
 
-        <li>
-          <NavLink
-            to="/date-time"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-blue-100"
-              }`
-            }
-          >
-            Date & Time
-          </NavLink>
-        </li>
+        
+        <button
+          className="md:hidden"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={26} /> : <Menu size={26} />}
+        </button>
 
-        <li>
-          <NavLink
-            to="/drop-down"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-blue-100"
-              }`
-            }
-          >
-            Drop Down
-          </NavLink>
-        </li>
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex items-center space-x-4">
+          {navItems.map((item) => (
+            <li key={item.to}>
+              <NavLink
+                to={item.to}
+                className={({ isActive }) =>
+                  `px-4 py-2 rounded-md text-sm font-medium transition ${
+                    isActive
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-700 hover:bg-blue-100"
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-        <li>
-          <NavLink
-            to="/multi-document"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-blue-100"
-              }`
-            }
-          >
-            Multi Document
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to="/notification"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-blue-100"
-              }`
-            }
-          >
-            Notification
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to="/chart"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-blue-100"
-              }`
-            }
-          >
-            Chart
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to="/form"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-blue-100"
-              }`
-            }
-          >
-            Form
-          </NavLink>
-        </li>
-
-      </ul>
+      {/* Mobile Dropdown Menu */}
+      {isOpen && (
+        <ul className="md:hidden flex flex-col space-y-2 px-4 pb-4">
+          {navItems.map((item) => (
+            <li key={item.to}>
+              <NavLink
+                to={item.to}
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  `block px-4 py-2 rounded-md text-sm font-medium transition ${
+                    isActive
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-700 hover:bg-blue-100"
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      )}
     </nav>
   );
 };

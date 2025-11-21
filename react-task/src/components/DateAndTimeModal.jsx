@@ -19,8 +19,8 @@ const DateAndTimeModal = ({ onClose, onSetDateTime }) => {
   };
 
   const monthNames = [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December"
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
   ];
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -127,7 +127,7 @@ const DateAndTimeModal = ({ onClose, onSetDateTime }) => {
     onSetDateTime(fullDate);
   };
 
-  
+
   const handleCancel = () => {
     setSelectedDate(null);
     setSelectedHour("12");
@@ -136,95 +136,101 @@ const DateAndTimeModal = ({ onClose, onSetDateTime }) => {
   };
 
   return (
-    <div className="w-80 h-[480px] bg-black rounded-2xl shadow-lg p-4 flex flex-col relative text-white">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/40 p-4 z-50">
+      <div className="w-full max-w-xs sm:max-w-sm bg-black rounded-2xl shadow-lg p-4 flex flex-col relative text-white">
 
-  
-      <div className="flex items-center justify-between mb-3">
-        <button
-          onClick={previousMonth}
-          aria-label="Previous month"
-          className="text-white bg-white/10 px-2 py-1 rounded-md text-sm"
-        >
-          «
-        </button>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-3">
+          <button
+            onClick={previousMonth}
+            aria-label="Previous month"
+            className="text-white bg-white/10 px-2 py-1 rounded-md text-sm"
+          >
+            «
+          </button>
 
-        <div className="text-center">
-          <div className="text-sm text-white font-semibold">
-            {monthNames[currentDate.getMonth()]}
+          <div className="text-center">
+            <div className="text-sm text-white font-semibold">
+              {monthNames[currentDate.getMonth()]}
+            </div>
+            <div className="text-xs text-gray-300">{currentDate.getFullYear()}</div>
           </div>
-          <div className="text-xs text-gray-300">{currentDate.getFullYear()}</div>
+
+          <button
+            onClick={nextMonth}
+            aria-label="Next month"
+            className="text-white bg-white/10 px-2 py-1 rounded-md text-sm"
+          >
+            »
+          </button>
         </div>
 
-        <button
-          onClick={nextMonth}
-          aria-label="Next month"
-          className="text-white bg-white/10 px-2 py-1 rounded-md text-sm"
-        >
-          »
-        </button>
-      </div>
+       
+        <div className="grid grid-cols-7 gap-1 mb-2 text-[10px] sm:text-xs text-gray-300">
+          {dayNames.map((d, i) => (
+            <div
+              key={`${d}-${i}`}
+              className="h-6 flex items-center justify-center font-semibold"
+            >
+              {d}
+            </div>
+          ))}
+        </div>
 
-      
-      <div className="grid grid-cols-7 gap-1 mb-2 text-xs text-gray-300">
-        {dayNames.map((d, i) => (
-          <div
-            key={`${d}-${i}`}
-            className="h-6 flex items-center justify-center font-semibold"
+        
+        <div className="grid grid-cols-7 gap-1 place-items-center flex-1">
+          {renderCalendarDays()}
+        </div>
+
+       
+        <div className="mt-1 p-2 flex justify-center gap-3 items-center">
+
+          <select
+            value={selectedHour}
+            onChange={(e) => setSelectedHour(e.target.value)}
+            className="px-2 py-1 h-8 border border-gray-600 bg-black text-white rounded-md text-sm"
           >
-            {d}
-          </div>
-        ))}
-      </div>
+            {hours.map((h) => (
+              <option key={h} value={h}>{h}</option>
+            ))}
+          </select>
 
-      
-      <div className="grid grid-cols-7 gap-1 place-items-center flex-1">
-        {renderCalendarDays()}
-      </div>
+          <span className="text-white font-semibold text-lg">:</span>
 
-      
-      <div className="mt-4 rounded-lg p-3 flex justify-center space-x-2 items-center">
-        <select
-          value={selectedHour}
-          onChange={(e) => setSelectedHour(e.target.value)}
-          className="px-2 py-1 border border-gray-600 bg-black text-white rounded-md text-sm"
-        >
-          {hours.map((h) => (
-            <option key={h} value={h}>
-              {h}
-            </option>
-          ))}
-        </select>
-        <span className="text-white font-semibold">:</span>
-        <select
-          value={selectedMinute}
-          onChange={(e) => setSelectedMinute(e.target.value)}
-          className="px-2 py-1 border border-gray-600 bg-black text-white rounded-md text-sm"
-        >
-          {minutes.map((m) => (
-            <option key={m} value={m}>
-              {m}
-            </option>
-          ))}
-        </select>
-      </div>
+          <select
+            value={selectedMinute}
+            onChange={(e) => setSelectedMinute(e.target.value)}
+            className="px-2 py-1 h-8 border border-gray-600 bg-black text-white rounded-md text-sm"
+          >
+            {minutes.map((m) => (
+              <option key={m} value={m}>{m}</option>
+            ))}
+          </select>
 
-      
-      <div className="mt-4 flex justify-between">
-        <button
-          onClick={handleCancel}
-          className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all text-sm font-medium"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={handleSetClick}
-          className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-all text-sm font-semibold"
-        >
-          Set
-        </button>
+        </div>
+
+
+        
+        <div className="mt-4 flex flex-col sm:flex-row gap-2 sm:justify-between">
+          <button
+            onClick={handleCancel}
+            className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all text-sm font-medium w-full sm:w-auto"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={handleSetClick}
+            className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-all text-sm font-semibold w-full sm:w-auto"
+          >
+            Set
+          </button>
+        </div>
+
       </div>
     </div>
   );
+
 };
 
 export default DateAndTimeModal;
