@@ -2,6 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function AIForm() {
+
+  const API = process.env.REACT_APP_API_URL;
+
+  
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -18,7 +22,7 @@ export default function AIForm() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/validate-form", form);
+       const response = await axios.post(`${API}/api/validate-form`, form);
 
       if (!response.data.isValid) {
         setErrors(response.data.errors || {});
